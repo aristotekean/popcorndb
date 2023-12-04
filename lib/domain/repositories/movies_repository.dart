@@ -1,5 +1,5 @@
 import 'package:popcorndb/domain/entities/movie.dart';
 
-abstract class MovieDataRepository {
+abstract class MoviesRepository {
   Future<List<Movie>> getNowPlaying({int page = 1});
 }
