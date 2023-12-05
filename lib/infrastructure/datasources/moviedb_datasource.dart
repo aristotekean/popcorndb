@@ -11,7 +11,7 @@ class MovidedbDataSource extends MoviesDataSource {
       queryParameters: {'api_key': Environment.theMovieDbKey}));
   @override
   Future<List<Movie>> getNowPlaying({int page = 1}) async {
-    final response = await dio.get('/movie/now/playing');
+    final response = await dio.get('/movie/now_playing');
     final movidedbResponse = MovieDbResponse.fromJson(response.data);
     final List<Movie> movies = movidedbResponse.results.where((m) => m.posterPath != 'no-poster')
         .map((m) => MovieMapper.movieDBToEntity(m))
