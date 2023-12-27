@@ -4,6 +4,7 @@ import 'package:popcorndb/domain/datasources/movies_datasource.dart';
 import 'package:popcorndb/domain/entities/movie.dart';
 import 'package:popcorndb/infrastructure/mappers/movie_mapper.dart';
 import 'package:popcorndb/infrastructure/models/movidedb_response.dart';
+import 'package:popcorndb/infrastructure/models/movie_details.dart';
 
 class MovidedbDataSource extends MoviesDataSource {
   final dio = Dio(BaseOptions(
@@ -45,5 +46,16 @@ class MovidedbDataSource extends MoviesDataSource {
     final response =
         await dio.get('/movie/upcoming', queryParameters: {'page': page});
     return _jsonToMovies(response.data);
+  }
+
+  @override
+  Future<Movie> getMovieById(String id) async {
+    final response = await dio.get('/movie/$id');
+    if (response.statusCode != 200) {
+      throw Exception('The Movie with $id not found');
+    }
+    final movieDetails = MovieDetails.fromJson(response.data);
+    final Movie movie = MovieMapper.movieDetailToEntity(movieDetails);
+    return movie;
   }
 }
